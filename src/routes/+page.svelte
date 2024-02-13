@@ -3,7 +3,13 @@
 	const genAI = new GoogleGenerativeAI('AIzaSyAv31hw2jnZ180UE803Htb5UlogheWQjJ0');
 
 	const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-	let messages = [];
+	let messages = [
+        { message: 'Hello, I am Gemini AI. How can I help you today?', isAI: true, time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) },
+    ];
+    let element;
+    const scrollToBottom = async (node) => {
+        node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
+    }; 
 	let myQuestion = '';
 	var isLoading = false;
 	async function sendMessage(question) {
@@ -13,21 +19,21 @@
 		const response = await result.response;
 		const text = response.text();
 		messages = [...messages, { message: text, isAI: true , time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) }];
+        scrollToBottom(element)
 		isLoading = false;
 	}
 </script>
 
 <div class="bg-blue-500 w-screen h-screen p-5">
 	<div class="flex flex-col w-full h-full space-y-2">
-		<div class="bg-white w-full h-full rounded-lg p-5 space-y-2 overflow-y-scroll no-scrollbar">
+		<div class="bg-white w-full h-full rounded-lg p-5 space-y-2 overflow-y-scroll no-scrollbar" bind:this={element}>
 			{#each messages as message}
 				{#if message.isAI}
 					<div class="flex items-start gap-2.5">
 						<!-- svelte-ignore a11y-missing-attribute -->
-						<img
-							class="w-12 h-12 rounded-full bg-cover"
-							src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-						/>
+                        <div class="block p-2 bg-gray-100 rounded-lg dark:bg-gray-700">
+                            <img class="w-8 h-8 rounded-full" src="/gemini.jpg" alt="Flowbite logo">
+                        </div>
 						<div
 							class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-xl dark:bg-gray-700"
 						>
@@ -54,10 +60,9 @@
 							</p>
 						</div>
 						<!-- svelte-ignore a11y-missing-attribute -->
-						<img
-							class="w-12 h-12 rounded-full bg-cover"
-							src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-						/>
+						<div class="block p-2 bg-gray-100 rounded-lg dark:bg-gray-700">
+                            <img class="w-8 h-8 rounded-full" src="/asker.jpg" alt="Flowbite logo">
+                        </div>
 					</div>
 				{/if}
 			{/each}
